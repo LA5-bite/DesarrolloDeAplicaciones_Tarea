@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-card">
+  <h1>{{ heading }}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <label>{{ field.label }}{{ field }}</label>
+      {% if field.help_text %}<small>{{ field.help_text|safe }}</small>{% endif %}
+      {% for error in field.errors %}<p class="error">{{ error }}</p>{% endfor %}
+    {% endfor %}
+    {% if form.non_field_errors %}<p class="error">{{ form.non_field_errors }}</p>{% endif %}
+    <button class="button" type="submit">{{ button_text }}</button>
+  </form>
+</section>
+{% endblock %}

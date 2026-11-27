@@ -1,45 +1,69 @@
-# Metodología de Desarrollo en V
+# Aplicación web base — Django + Vite + Docker
 
-## Introducción
+Proyecto inicial genérico para la tarea. Incluye autenticación, cuatro roles, Django Admin, plantillas y una interfaz preparada con Vite.
 
-La metodología de desarrollo en V es un modelo que organiza el proceso de creación de software mediante etapas ordenadas. En este trabajo se describe la rama descendente de la metodología, que permite analizar las necesidades del proyecto y definir progresivamente cómo se construirá la aplicación antes de comenzar a programarla.
+## Requisitos para ejecutarlo localmente
+- Docker Desktop instalado y abierto.
+- Git instalado (opcional para trabajar con GitHub).
+- Node.js y npm solo si deseas ejecutar Vite fuera de Docker.
 
-Estas etapas servirán como guía para planificar y desarrollar la aplicación web.
+## Ejecutar con Docker
+Desde la carpeta que contiene este README, abre una terminal y ejecuta:
 
-## Rama descendente
+```powershell
+docker compose up --build
+```
 
-La rama descendente comprende las etapas de análisis y diseño. En ellas se pasa de identificar las necesidades de los usuarios a establecer la estructura y el funcionamiento de la aplicación.
+Cuando termine, abre http://localhost:8000
 
-### 1. Análisis de requisitos (Requirement Gathering)
+Para crear el usuario administrador, abre otra terminal en la misma carpeta:
 
-Se identifican y estudian las necesidades de los usuarios. Se establecen los requisitos funcionales, que definen las funciones del sistema, y los no funcionales, que determinan características como la seguridad y el rendimiento.
+```powershell
+docker compose exec web python manage.py createsuperuser
+```
 
-**Propósito de esta etapa:** determinar qué necesita el usuario y qué debe cumplir la aplicación.
+Sigue las preguntas de la terminal. Luego entra en http://localhost:8000/admin/
 
-### 2. Análisis del sistema (System Analysis)
+Para detener el proyecto:
+```powershell
+docker compose down
+```
 
-Se define cómo funcionará la aplicación, sus procesos, funcionalidades, tipos de usuarios, permisos y formas de interacción.
+## Ejecutar sin Docker (alternativa)
+Necesitas Python 3.12 o compatible y Node.js LTS.
 
-**Propósito de esta etapa:** describir el comportamiento general del sistema y establecer cómo responderá a las necesidades identificadas.
+Terminal 1 — backend:
+```powershell
+cd backend
+py -m venv env
+.\env\Scripts\Activate.ps1
+pip install -r requirements.txt
+py manage.py migrate
+py manage.py createsuperuser
+py manage.py runserver
+```
 
-### 3. Diseño de software y arquitectura (Software Design)
+Terminal 2 — construir los archivos de Vite:
+```powershell
+cd frontend
+npm install
+npm run build
+```
 
-Se establece la estructura técnica del software, sus módulos, tecnologías, herramientas y la comunicación entre sus componentes.
+Abre http://127.0.0.1:8000
 
-**Propósito de esta etapa:** definir cómo estará organizada técnicamente la aplicación y cómo se relacionarán sus partes.
+## Roles incluidos
+- Administrador: superusuario de Django; puede entrar a `/admin/` y administrar cuentas.
+- Gestor: accede al panel de gestión básico.
+- Usuario: accede al panel de usuario.
+- Visitante: puede consultar la página pública sin iniciar sesión.
 
-### 4. Diseño detallado o de módulos (Module Design)
+Los nuevos registros reciben el rol `Usuario`. El administrador puede cambiar el rol desde Django Admin.
 
-Se especifica el funcionamiento de cada componente, incluyendo algoritmos, funciones, estructuras de datos, operaciones y validaciones.
+## Estructura
+- `backend/`: proyecto Django, autenticación, modelos, vistas y plantillas.
+- `frontend/`: proyecto Vite (JavaScript y CSS).
+- `docker-compose.yml`: servicio para ejecutar el proyecto en Docker.
 
-**Propósito de esta etapa:** detallar cómo deberá funcionar internamente cada módulo para orientar su posterior desarrollo.
-
-## Punto de inflexión: Codificación (Coding)
-
-En esta etapa se comienza a programar el software siguiendo los diseños y especificaciones establecidos durante la rama descendente. La codificación transforma lo planificado en código fuente y constituye el punto de unión entre el diseño y las pruebas.
-
-**Propósito de esta etapa:** construir la aplicación mediante la implementación del código definido a partir de las etapas anteriores.
-
-## Conclusión
-
-La rama descendente de la metodología de desarrollo en V permite organizar el trabajo antes de comenzar la programación. Cada etapa aporta información y definiciones que sirven de base para la siguiente: primero se identifican las necesidades, luego se analiza el sistema, se diseña su arquitectura y se detallan sus módulos. Finalmente, con esas definiciones como guía, se inicia la codificación de la aplicación.
+## Importante
+Esta es una base técnica genérica porque las instrucciones compartidas no especifican la temática de la aplicación. Antes de añadir módulos de negocio (por ejemplo, inventario, cursos o citas), hay que confirmar qué aplicación se desea construir y qué exige el profesor.

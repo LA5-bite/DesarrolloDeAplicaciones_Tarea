@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+<section class="form-card"><h1>Iniciar sesión</h1>
+<form method="post">{% csrf_token %}
+{% for field in form %}<label>{{ field.label }}{{ field }}</label>{% for error in field.errors %}<p class="error">{{ error }}</p>{% endfor %}{% endfor %}
+{% if form.non_field_errors %}<p class="error">{{ form.non_field_errors }}</p>{% endif %}
+<button class="button" type="submit">Entrar</button></form></section>
+{% endblock %}

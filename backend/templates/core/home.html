@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Inicio | Mi aplicación{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">PROYECTO DE DESARROLLO WEB</p>
+  <h1>Bienvenido a tu aplicación web</h1>
+  <p>Esta es la página pública. Desde aquí puedes crear una cuenta o iniciar sesión para acceder a las funciones disponibles según tu rol.</p>
+  <div class="actions">
+    {% if user.is_authenticated %}<a class="button" href="{% url 'dashboard' %}">Ir a mi panel</a>
+    {% else %}<a class="button" href="{% url 'register' %}">Crear una cuenta</a><a class="button secondary" href="{% url 'login' %}">Iniciar sesión</a>{% endif %}
+  </div>
+</section>
+<section class="cards">
+  <article><h2>Acceso por roles</h2><p>La aplicación distingue entre Administrador, Gestor, Usuario y Visitante.</p></article>
+  <article><h2>Gestión de cuentas</h2><p>Los usuarios pueden registrarse e iniciar sesión de forma segura.</p></article>
+  <article><h2>Administración</h2><p>El administrador puede gestionar las cuentas desde Django Admin.</p></article>
+</section>
+{% endblock %}
